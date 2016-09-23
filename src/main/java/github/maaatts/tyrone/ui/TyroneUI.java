@@ -113,6 +113,12 @@ public class TyroneUI extends JFrame {
 		this.toolbarOpenButton.setIcon(IconLoader.getImage("folder.png"));
 		this.toolbarOpenButton.setBorder(new EmptyBorder(3, 3, 3, 3));
 		this.toolbarOpenButton.setToolTipText("Open File");
+		this.toolbarOpenButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tyrone.showFilePickerDialog();
+			}
+		});
 		this.toolbar.addSeparator();
 		this.toolbar.add(this.toolbarSearchButton);
 		this.toolbarSearchButton.setIcon(IconLoader.getImage("magnifier.png"));
@@ -179,7 +185,12 @@ public class TyroneUI extends JFrame {
 		});
 
 		this.openItem.setIcon(IconLoader.getImage("folder.png"));
-		//
+		this.openItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tyrone.showFilePickerDialog();
+			}
+		});
 
 		this.settingsItem.setIcon(IconLoader.getImage("cog.png"));
 		//

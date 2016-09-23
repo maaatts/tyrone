@@ -3,6 +3,7 @@ package github.maaatts.tyrone;
 import java.io.File;
 import java.util.jar.JarFile;
 
+import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 
 import github.maaatts.tyrone.io.JarParser;
@@ -11,21 +12,32 @@ import github.maaatts.tyrone.ui.TyroneUI;
 public class Tyrone {
 	private TyroneUI ui;
 
-	private void run(String file) {
+	private void run() {
 		this.ui = new TyroneUI(this);
 		this.ui.setVisible(true);
+	}
 
-		JarParser parser = null;
+	public void showFilePickerDialog() {
+		JFileChooser fc = new JFileChooser();
+		int returnVal = fc.showOpenDialog(ui);
 
-		try {
-			parser = new JarParser(new JarFile(new File(file)));
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+
+			// TODO: Check if file is .class or .jar
+			
+			JarParser parser = null;
+
+			try {
+				parser = new JarParser(new JarFile(file));
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+
+			ModelGenerator mg = new ModelGenerator(parser);
+			this.ui.displayModel(mg.parse());
 		}
-
-		ModelGenerator mg = new ModelGenerator(parser);
-		this.ui.displayModel(mg.parse());
 	}
 
 	public void quit() {
@@ -39,6 +51,6 @@ public class Tyrone {
 			e.printStackTrace();
 		}
 
-		new Tyrone().run(args[0]);
+		new Tyrone().run();
 	}
 }
